@@ -1,0 +1,18 @@
+# 10-ssl.conf
+# SSL/TLS settings for Dovecot
+
+ssl = yes
+ssl_cert = </etc/ssl/certs/dovecot.pem
+ssl_key = </etc/ssl/private/dovecot.key
+
+# Require SSL for all connections
+ssl_min_protocol = TLSv1.2
+ssl_cipher_list = EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH
+ssl_prefer_server_ciphers = yes
+
+# Path to the Diffie-Hellman parameters file
+# ssl_dh_parameters_length = 2048
+# ssl_dh = </etc/dovecot/dh.pem
+
+# SSL/TLS logging
+ssl_verbose_debug = no

@@ -1,0 +1,46 @@
+# 10-mail.conf
+# Mailbox locations and related settings
+
+mail_location = maildir:~/Maildir
+
+# Use mbox format for mailboxes
+# mail_location = mbox:~/mail:INBOX=/var/mail/%u
+
+# Use Maildir format for mailboxes
+# mail_location = maildir:~/Maildir
+
+# Default mail access permissions
+mail_privileged_group = mail
+
+# Maximum size of a mail message (in bytes)
+# 0 means no limit
+mail_max_user_size = 0
+
+# Namespace configuration
+namespace inbox {
+  inbox = yes
+
+  # These are the default folders that Dovecot creates.
+  # Special use flags help clients identify these folders.
+  mailbox Drafts {
+    special_use = \Drafts
+  }
+  mailbox Junk {
+    special_use = \Junk
+  }
+  mailbox Trash {
+    special_use = \Trash
+  }
+  mailbox Sent {
+    special_use = \Sent
+  }
+  mailbox "Sent Messages" {
+    special_use = \Sent
+  }
+  mailbox Archives {
+    special_use = \Archive
+  }
+}
+
+# Other mail settings
+# mail_plugins = $mail_plugins quota sieve

@@ -48,7 +48,7 @@ com.openexchange.MinimumSearchCharacters=0
 #
 # WARNING! This should be only set to "false" if you know what you are doing and if all requests are secure - requests are always encrypted
 # by using HTTPS.
-com.openexchange.IPCheck=false
+com.openexchange.IPCheck=true
 
 # Subnet mask for accepting IP-ranges.
 # Using CIDR-Notation for v4 and v6 or dotted decimal only for v4.
@@ -101,7 +101,7 @@ com.openexchange.cookie.hash.salt={{ ox_cookie_salt }}
 # encrypted connections. If HTTPS is terminated in front by some load balancer only HTTP is detected. Then this parameter can force to set
 # the secure flag for cookies. Additionally all links generated inside the groupware to point at itself will use the https:// protocol prefix
 # when this is set. Use this flag to indicate that HTTPS termination happens elsewhere.
-com.openexchange.forceHTTPS=false
+com.openexchange.forceHTTPS=true
 
 # The maximum number of active sessions that will be created by this Manager, or -1 for no limit.
 # Default is 250.000 HTTP sessions
@@ -271,14 +271,14 @@ com.openexchange.log.suppressedCategories=USER_INPUT
 # Both settings need to be set in order to have basic auth enabled - "com.openexchange.rest.services.basic-auth.login" and "com.openexchange.rest.services.basic-auth.password"
 #
 # Default is empty. Please change!
-com.openexchange.rest.services.basic-auth.login=
+com.openexchange.rest.services.basic-auth.login={{ ox_rest_basic_auth_login }}
 
 # Specify the password used for HTTP basic auth by internal REST servlet
 #
 # Both settings need to be set in order to have basic auth enabled - "com.openexchange.rest.services.basic-auth.login" and "com.openexchange.rest.services.basic-auth.password"
 #
 # Default is empty. Please change!
-com.openexchange.rest.services.basic-auth.password=
+com.openexchange.rest.services.basic-auth.password={{ ox_rest_basic_auth_password }}
 
 # The backend either delivers a thumbnail when it's available from cache or fails fast while initiating the thumbnail creation/caching in
 # the background. The advantage is that clients aren't blocked and can simply retry later when the thumbnail can be delivered from cache.

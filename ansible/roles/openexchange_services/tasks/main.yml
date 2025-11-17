@@ -1,4 +1,94 @@
 ---
-- name: Placeholder for OpenExchange Services tasks
-  ansible.builtin.debug:
-    msg: "This is where OpenExchange services configuration tasks will go."
+- name: Install Java for Solr
+  ansible.builtin.apt:
+    name: openjdk-11-jdk
+    state: present
+    update_cache: yes
+
+- name: Download Solr
+  ansible.builtin.unarchive:
+    src: "https://archive.apache.org/dist/lucene/solr/{{ solr_version }}/solr-{{ solr_version }}.tgz"
+    dest: "/opt"
+    remote_src: yes
+    creates: "{{ solr_install_dir }}/bin/solr"
+
+- name: Create symlink for Solr installation
+  ansible.builtin.file:
+    src: "/opt/solr-{{ solr_version }}"
+    dest: "{{ solr_install_dir }}"
+    state: link
+
+- name: Install Solr as a service
+  ansible.builtin.command: "{{ solr_install_dir }}/bin/install_solr_service.sh /opt/solr-{{ solr_version }}/solr-{{ solr_version }}.tgz -i {{ solr_install_dir }} -d /var/solr -u solr -p {{ solr_port }} -s /etc/init.d/solr -e /etc/default/solr.in.sh"
+  args:
+    creates: "/etc/init.d/solr"
+
+- name: Configure Solr heap size
+  ansible.builtin.lineinfile:
+    path: "/etc/default/solr.in.sh"
+    regexp: '^SOLR_HEAP='
+    line: 'SOLR_HEAP="{{ solr_heap_size }}"'
+    state: present
+  notify: Restart Solr
+
+- name: Start Solr service
+  ansible.builtin.service:
+    name: solr
+    state: started
+    enabled: yes
+
+- name: Clone Dimail API Server repository
+  ansible.builtin.git:
+    repo: "{{ dimail_api_server_repo }}"
+    dest: "/opt/dimail-api-server"
+    version: "{{ dimail_api_server_version }}"
+    force: yes
+
+- name: Build Dimail API Server (example - adjust based on actual build process)
+  ansible.builtin.command: "npm install && npm run build" # Assuming Node.js project
+  args:
+    chdir: "/opt/dimail-api-server"
+  # This task might need to be adjusted based on the actual build process (e.g., Maven, Gradle, Python poetry, etc.)
+
+- name: Configure Dimail API Server (example - deploy config file)
+  ansible.builtin.template:
+    src: dimail-api-server.conf.j2 # You would need to create this template
+    dest: "/etc/dimail-api-server/config.conf"
+  notify: Restart Dimail API Server # You would need to define this handler
+
+- name: Ensure Dimail API Server is running (example - systemd service)
+  ansible.builtin.systemd:
+    name: dimail-api-server
+    state: started
+    enabled: yes
+  # This assumes a systemd service file for dimail-api-server is created/managed elsewhere or by the build process
+
+- name: Clone Ohlala API repository (if enabled)
+  ansible.builtin.git:
+    repo: "{{ ohlala_api_server_repo }}"
+    dest: "/opt/ohlala-api"
+    version: "{{ ohlala_api_server_version }}"
+    force: yes
+  when: ohlala_api_enabled
+
+- name: Build Ohlala API (example - adjust based on actual build process)
+  ansible.builtin.command: "npm install && npm run build" # Assuming Node.js project
+  args:
+    chdir: "/opt/ohlala-api"
+  when: ohlala_api_enabled
+  # This task might need to be adjusted based on the actual build process
+
+- name: Configure Ohlala API (example - deploy config file)
+  ansible.builtin.template:
+    src: ohlala-api.conf.j2 # You would need to create this template
+    dest: "/etc/ohlala-api/config.conf"
+  when: ohlala_api_enabled
+  notify: Restart Ohlala API Server # You would need to define this handler
+
+- name: Ensure Ohlala API Server is running (example - systemd service)
+  ansible.builtin.systemd:
+    name: ohlala-api-server
+    state: started
+    enabled: yes
+  when: ohlala_api_enabled
+  # This assumes a systemd service file for ohlala-api-server is created/managed elsewhere or by the build process

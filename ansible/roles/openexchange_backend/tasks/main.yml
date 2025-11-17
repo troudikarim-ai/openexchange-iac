@@ -15,6 +15,12 @@
     loop_var: mdb_task
   tags: [mariadb]
 
+- name: Include Postfix configuration
+  ansible.builtin.include_tasks: postfix_config.yml
+
+- name: Include Dovecot configuration
+  ansible.builtin.include_tasks: dovecot_config.yml
+
 - name: Install OpenExchange packages
   ansible.builtin.include_tasks: ox_packages.yml
   tags: [ox]

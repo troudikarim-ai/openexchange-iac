@@ -1,0 +1,47 @@
+---
+- name: Configure Dovecot main configuration
+  ansible.builtin.template:
+    src: dovecot/dovecot.conf.j2
+    dest: /etc/dovecot/dovecot.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart dovecot
+
+- name: Configure Dovecot 10-mail.conf
+  ansible.builtin.template:
+    src: dovecot/conf.d/10-mail.conf.j2
+    dest: /etc/dovecot/conf.d/10-mail.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart dovecot
+
+- name: Configure Dovecot 10-auth.conf
+  ansible.builtin.template:
+    src: dovecot/conf.d/10-auth.conf.j2
+    dest: /etc/dovecot/conf.d/10-auth.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart dovecot
+
+- name: Configure Dovecot 10-master.conf
+  ansible.builtin.template:
+    src: dovecot/conf.d/10-master.conf.j2
+    dest: /etc/dovecot/conf.d/10-master.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart dovecot
+
+- name: Configure Dovecot 10-ssl.conf
+  ansible.builtin.template:
+    src: dovecot/conf.d/10-ssl.conf.j2
+    dest: /etc/dovecot/conf.d/10-ssl.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart dovecot
+
+# Add more Dovecot configuration tasks here as needed

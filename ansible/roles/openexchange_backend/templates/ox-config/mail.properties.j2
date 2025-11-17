@@ -29,7 +29,7 @@ com.openexchange.mail.transportServerSource=global
 
 # The master password for primary mail/transport server. Only takes effect when property
 # "com.openexchange.mail.passwordSource" is set to "global"
-com.openexchange.mail.masterPassword=secret
+com.openexchange.mail.masterPassword={{ ox_master_password }}
 
 # Primary mail server: e.g. 192.168.178.32:8143 or imap://192.168.178.32:7143
 # Only takes effect when property "com.openexchange.mail.mailServerSource" is set to "global"
@@ -118,7 +118,7 @@ com.openexchange.mail.watcherFrequency=10000
 com.openexchange.mail.watcherTime=60000
 
 # Define if watcher is allowed to close exceeded mail connections
-com.openexchange.mail.watcherShallClose=false
+com.openexchange.mail.watcherShallClose=true
 
 # JavaMail Properties
 com.openexchange.mail.JavaMailProperties=javamail.properties
@@ -143,7 +143,7 @@ com.openexchange.mail.rateLimitPrimaryOnly=true
 
 # Define the time (in milliseconds) which must pass by before a new mail can be sent
 # A value of 0 disables the limit.
-com.openexchange.mail.rateLimit=0
+com.openexchange.mail.rateLimit=60000
 
 # Define the comma-separated IP ranges for which a rate limit will not be applied.
 #
@@ -152,7 +152,7 @@ com.openexchange.mail.rateLimitDisabledRange=
 
 # Define the allowed maximum number of recipients in a mail
 # A value of 0 disables the limit.
-com.openexchange.mail.maxToCcBcc=0
+com.openexchange.mail.maxToCcBcc=100
 
 # Whether folders which carry a POP3 account shall not be displayed.
 # This property affects primary account only.
@@ -189,7 +189,7 @@ com.openexchange.mail.translateDefaultFolders=true
 # Specifies the max. mail size allowed being transported
 # A value of zero or less means infinite.
 # Default is -1 (infinite)
-com.openexchange.mail.maxMailSize=-1
+com.openexchange.mail.maxMailSize=52428800
 
 # Whether to hide rather technical data from JSON representation of the primary mail account
 # e.g. port, server name, secure flag, etc.

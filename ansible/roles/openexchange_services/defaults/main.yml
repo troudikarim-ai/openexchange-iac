@@ -1,3 +1,19 @@
 ---
-# Default variables for openexchange_services
-# This file will contain default settings for additional OpenExchange services.
+# Defaults for openexchange_services role
+
+# Solr configuration
+solr_version: "8.11.2" # Specify the desired Solr version
+solr_install_dir: "/opt/solr"
+solr_port: 8983
+solr_heap_size: "2g" # Example: 2GB heap size for Solr
+
+# Dimail API Server configuration
+dimail_api_server_port: 8080 # Example port for Dimail API Server
+dimail_api_server_repo: "https://github.com/ens-ops/dimail-api.git" # Example repository
+dimail_api_server_version: "main" # Example branch/tag
+
+# Ohlala API configuration (if needed)
+ohlala_api_enabled: false # Set to true to enable Ohlala API
+ohlala_api_server_port: 8081 # Example port for Ohlala API Server
+ohlala_api_server_repo: "https://github.com/ens-ops/ohlala-api.git" # Example repository
+ohlala_api_server_version: "main" # Example branch/tag

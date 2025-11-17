@@ -1,2 +1,15 @@
 ---
-# Handlers for OpenExchange services
+- name: Restart Solr
+  ansible.builtin.service:
+    name: solr
+    state: restarted
+
+- name: Restart Dimail API Server
+  ansible.builtin.systemd:
+    name: dimail-api-server
+    state: restarted
+
+- name: Restart Ohlala API Server
+  ansible.builtin.systemd:
+    name: ohlala-api-server
+    state: restarted

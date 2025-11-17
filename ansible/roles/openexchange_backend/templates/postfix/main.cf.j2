@@ -1,0 +1,72 @@
+# See /usr/share/postfix/main.cf.dist for a commented example
+
+# Basic settings
+smtpd_banner = $myhostname ESMTP $mail_name (Ubuntu)
+biff = no
+append_dot_mydomain = no
+readme_directory = no
+compatibility_level = 2
+
+# TLS parameters
+smtpd_tls_cert_file={{ postfix_tls_cert_file }}
+smtpd_tls_key_file={{ postfix_tls_key_file }}
+smtpd_tls_security_level=encrypt
+smtp_tls_security_level=encrypt
+smtpd_tls_session_cache_database = btree:${data_directory}/smtpd_scache
+smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache
+
+# See /usr/share/doc/postfix/TLS_README.gz in the postfix-doc package for
+# information about enabling TLS on a mail server.
+
+# SASL authentication
+smtpd_sasl_type = dovecot
+smtpd_sasl_path = private/auth
+smtpd_sasl_auth_enable = yes
+smtpd_recipient_restrictions =
+  permit_mynetworks,
+  permit_sasl_authenticated,
+  reject_unauth_destination,
+  reject_invalid_hostname,
+  reject_non_fqdn_hostname,
+  reject_non_fqdn_sender,
+  reject_non_fqdn_recipient,
+  reject_unknown_sender_domain,
+  reject_unknown_recipient_domain,
+  check_policy_service inet:127.0.0.1:10023
+
+# See /usr/share/doc/postfix/SASL_README.gz in the postfix-doc package for
+# details on how to enable SASL on the smtp or smtpd.
+
+myhostname = {{ tech_domain.name }}
+alias_maps = hash:/etc/aliases
+alias_database = hash:/etc/aliases
+myorigin = /etc/mailname
+mydestination = $myhostname, {{ tech_domain.name }}, localhost.{{ tech_domain.name }}, localhost
+relayhost =
+mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128 {{ openexchange_backend_ip }}/32 {{ openexchange_ui_ip }}/32 {{ openexchange_services_ip }}/32
+mailbox_size_limit = 52428800
+recipient_delimiter = +
+inet_interfaces = all
+inet_protocols = all
+
+# Virtual Mailbox settings for Dovecot
+virtual_mailbox_domains = proxy:mysql:/etc/postfix/mysql-virtual-mailbox-domains.cf
+virtual_mailbox_maps = proxy:mysql:/etc/postfix/mysql-virtual-mailbox-maps.cf
+virtual_alias_maps = proxy:mysql:/etc/postfix/mysql-virtual-alias-maps.cf
+virtual_transport = dovecot
+
+dovecot_destination_recipient_limit = 1
+
+# OpenDKIM
+milter_default_action = accept
+milter_protocol = 2
+smtpd_milters = inet:localhost:8891
+non_smtpd_milters = $smtpd_milters
+
+# Amavis/SpamAssassin
+content_filter = amavisfeed:[127.0.0.1]:10024
+receive_override_options = no_address_mappings
+
+# Postfix logging
+# syslog_facility = mail
+# syslog_name = postfix

@@ -18,13 +18,20 @@ resource "proxmox_vm_qemu" "openexchange_backend" {
   sshkeys = var.ssh_public_key
 
   cpu {
-    cores = var.vm_cpu_cores
+    cores = var.backend_vm_cpu_cores
   }
-  memory  = var.vm_memory_mb
+  memory  = var.backend_vm_memory_mb
 
   disk {
     slot    = "scsi0"
-    size    = "${var.vm_disk_size_gb}G"
+    size    = "${var.backend_vm_disk_size_gb}G"
+    storage = var.proxmox_storage_pool
+    type    = "disk"
+  }
+
+  disk {
+    slot    = "scsi1"
+    size    = "${var.backend_data_disk_size_gb}G"
     storage = var.proxmox_storage_pool
     type    = "disk"
   }
@@ -33,9 +40,18 @@ resource "proxmox_vm_qemu" "openexchange_backend" {
     id     = 0
     bridge = var.proxmox_bridge_network_id
     model  = "virtio"
+    tag    = var.vlan_id_app_services
   }
 
-  ipconfig0 = "ip=${var.openexchange_backend_ip}/24,gw=${var.proxmox_gateway_ip}" # Assuming /24 subnet and a gateway IP
+  network {
+    id     = 1
+    bridge = var.proxmox_bridge_network_id
+    model  = "virtio"
+    tag    = var.vlan_id_database
+  }
+
+  ipconfig0 = "ip=${var.openexchange_backend_ip}/24,gw=${var.proxmox_gateway_ip}" # App & Services network
+  ipconfig1 = "ip=dhcp" # Database network, or static if defined
 
   lifecycle {
     ignore_changes = [
@@ -59,13 +75,13 @@ resource "proxmox_vm_qemu" "openexchange_ui" {
   sshkeys = var.ssh_public_key
 
   cpu {
-    cores = var.vm_cpu_cores
+    cores = var.ui_vm_cpu_cores
   }
-  memory  = var.vm_memory_mb
+  memory  = var.ui_vm_memory_mb
 
   disk {
     slot    = "scsi0"
-    size    = "${var.vm_disk_size_gb}G"
+    size    = "${var.ui_vm_disk_size_gb}G"
     storage = var.proxmox_storage_pool
     type    = "disk"
   }
@@ -74,6 +90,7 @@ resource "proxmox_vm_qemu" "openexchange_ui" {
     id     = 0
     bridge = var.proxmox_bridge_network_id
     model  = "virtio"
+    tag    = var.vlan_id_frontend
   }
 
   ipconfig0 = "ip=${var.openexchange_ui_ip}/24,gw=${var.proxmox_gateway_ip}"
@@ -99,13 +116,13 @@ resource "proxmox_vm_qemu" "openexchange_services" {
   sshkeys = var.ssh_public_key
 
   cpu {
-    cores = var.vm_cpu_cores
+    cores = var.services_vm_cpu_cores
   }
-  memory  = var.vm_memory_mb
+  memory  = var.services_vm_memory_mb
 
   disk {
     slot    = "scsi0"
-    size    = "${var.vm_disk_size_gb}G"
+    size    = "${var.services_vm_disk_size_gb}G"
     storage = var.proxmox_storage_pool
     type    = "disk"
   }
@@ -114,6 +131,7 @@ resource "proxmox_vm_qemu" "openexchange_services" {
     id     = 0
     bridge = var.proxmox_bridge_network_id
     model  = "virtio"
+    tag    = var.vlan_id_app_services
   }
 
   ipconfig0 = "ip=${var.openexchange_services_ip}/24,gw=${var.proxmox_gateway_ip}"
@@ -139,13 +157,13 @@ resource "proxmox_vm_qemu" "template_builder" {
   sshkeys = var.ssh_public_key
 
   cpu {
-    cores = var.vm_cpu_cores
+    cores = var.template_builder_vm_cpu_cores
   }
-  memory  = var.vm_memory_mb
+  memory  = var.template_builder_vm_memory_mb
 
   disk {
     slot    = "scsi0"
-    size    = "${var.vm_disk_size_gb}G"
+    size    = "${var.template_builder_vm_disk_size_gb}G"
     storage = var.proxmox_storage_pool
     type    = "disk"
   }
@@ -154,6 +172,7 @@ resource "proxmox_vm_qemu" "template_builder" {
     id     = 0
     bridge = var.proxmox_bridge_network_id
     model  = "virtio"
+    tag    = var.vlan_id_management
   }
 
   ipconfig0 = "ip=dhcp" # Use DHCP for the temporary builder VM

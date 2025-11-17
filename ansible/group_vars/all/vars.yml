@@ -21,16 +21,16 @@ openexchange_ui_domain: "ui.yourdomain.com"
 openexchange_ui_cert_name: "ui.yourdomain.com" # Should match the domain for Certbot
 
 # IP addresses for OpenExchange VMs (these should match your terraform.tfvars)
-openexchange_backend_ip: "192.168.1.10" # Example IP, adjust as needed
-openexchange_ui_ip: "192.168.1.11"    # Example IP, adjust as needed
-openexchange_services_ip: "192.168.1.12" # Example IP, adjust as needed
+openexchange_backend_ip: "192.168.30.10"
+openexchange_ui_ip: "192.168.20.10"
+openexchange_services_ip: "192.168.30.11"
 
 # SSH User for VM access (this should match your terraform.tfvars)
 vm_ssh_user: "ubuntu"
 
 # Domain specific variables
 tech_domain:
-  name: "yourdomain.com" # Used for mail server configurations
+  name: "ens-paris-saclay.fr" # Used for mail server configurations
 
 # Environment and feature flags
 env_type: "dev" # or 'prod'
@@ -41,3 +41,7 @@ features:
 
 # OpenExchange parameters (e.g., for OIDC integration)
 ox_params: [] # e.g., ['oidc'] if OIDC is used
+
+# Postfix TLS certificate paths
+postfix_tls_cert_file: "/etc/ssl/certs/postfix.pem" # Placeholder, update with actual path
+postfix_tls_key_file: "/etc/ssl/private/postfix.key" # Placeholder, update with actual path
