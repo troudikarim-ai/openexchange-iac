@@ -2,19 +2,12 @@
 # Common variables for all hosts
 
 # MariaDB/MySQL credentials
-mysql_root_pwd: "your_mysql_root_password"
-mysql_dovecot_pwd: "your_mysql_dovecot_password"
-
 # OpenExchange configuration
-ox_cookie_salt: "your_ox_cookie_salt_at_least_16_chars"
 ox_admin_username: "oxadmin"
-ox_admin_password: "your_ox_admin_password"
 ox_name: "openexchange-cluster"
 ox_configdb_name: "configdb"
 configdb_user: "configdb_user"
-configdb_pwd: "your_configdb_password"
 ox_master_username: "oxmaster"
-ox_master_password: "your_ox_master_password"
 
 # UI specific variables
 openexchange_ui_domain: "ui.yourdomain.com"
