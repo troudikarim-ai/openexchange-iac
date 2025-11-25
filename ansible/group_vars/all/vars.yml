@@ -14,9 +14,9 @@ openexchange_ui_domain: "ui.yourdomain.com"
 openexchange_ui_cert_name: "ui.yourdomain.com" # Should match the domain for Certbot
 
 # IP addresses for OpenExchange VMs (these should match your terraform.tfvars)
-openexchange_backend_ip: "192.168.30.10"
-openexchange_ui_ip: "192.168.20.10"
-openexchange_services_ip: "192.168.30.11"
+openexchange_backend_ip: "138.231.110.251"
+openexchange_ui_ip: "138.231.110.252"
+openexchange_services_ip: "138.231.110.253"
 
 # SSH User for VM access (this should match your terraform.tfvars)
 vm_ssh_user: "ubuntu"
