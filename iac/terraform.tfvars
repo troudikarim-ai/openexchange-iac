@@ -10,11 +10,11 @@ proxmox_bridge_network_id = "vmbr0" # Le nom de votre bridge réseau Proxmox
 proxmox_gateway_ip = "138.231.110.1" # L'IP de la passerelle pour votre réseau Proxmox (basée sur la plage fournie)
 
 # VLAN IDs (valeurs par défaut si non spécifiées)
-vlan_id_management = 10
-vlan_id_frontend = 20
-vlan_id_app_services = 30
-vlan_id_database = 40
-vlan_id_monitoring_logging = 50
+vlan_id_management = 1130
+vlan_id_frontend = 1130
+vlan_id_app_services = 1130
+vlan_id_database = 1130
+vlan_id_monitoring_logging = 1130
 
 # Adresses IP statiques pour les VMs OpenExchange (choisies dans la plage fournie)
 openexchange_backend_ip = "138.231.110.251"
